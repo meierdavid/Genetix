@@ -40,14 +40,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     
-    <h1>Chercher des séquences</h1>
-<div class="cadreh1">
-<form method="post" action="#" onsubmit="return false;">
-	  <label for="fonction">Entrer une fonction</label>&nbsp;:&nbsp;<input type="text" class="post" style="width: 320px" id="fonction" name="fonction" value="{$fonction}" onkeyup="chargeAjax('#resultat', 'searchSeq.php?fonction='+encodeURI($('#fonction').val().replace(/\+/g, '-')));" />
-      <input type="submit" name="submit" value="Chercher" onclick="chargeAjax('#resultat', 'searchSeq.php?fonctionSearch='+encodeURI($('#fonction').val().replace(/\+/g, '-')));" class='mainoption'/>
-      </form>
-</div> 
-<div id="resultat">
-</div> 
 
-</div>
