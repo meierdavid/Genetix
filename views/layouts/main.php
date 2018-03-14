@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Genetix',
+        'brandLabel' => 'Recombinator',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -38,8 +38,8 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav'],
     'items' => [
             ['label' => 'Liste des fonctions', 'url' => ['/permutationclasses/index']],
-            ['label' => 'Interpréter une séquence', 'url' => ['/logicalfunction/index']],
-            ['label' => 'Chercher des séquences', 'url' => ['/sequences/index']],
+            ['label' => 'Interpret a sequence', 'url' => ['/logicalfunction/index']],
+            ['label' => 'Search Sequences', 'url' => ['/sequences/index']],
         ],
         ]);
     
