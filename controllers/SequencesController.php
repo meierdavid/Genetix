@@ -12,6 +12,8 @@ use app\components\Logic;
 use app\components\Veritas;
 use app\components\VeritasLogic;
 use app\components\MinimalDisjunctiveForm;
+use app\components\Word;
+use app\components\VeritasWord;
 /**
  * SequencesController implements the CRUD actions for Sequences model.
  */
@@ -171,7 +173,81 @@ class SequencesController extends Controller
             ]);
         }
     }
+    
+    public function actionInter_seq_res() {
+        if (isset($_GET['sequence'])) 
+	{
+	    try 
+	    {
+		if (empty($_GET['sequence']))
+		    throw new \exception(t('La séquence ne peut être vide'));
+		
+		$word = new Word(urldecode($_GET['sequence']));
+		$word->exceptionsIfInvalid();
+		
+		setcookie ("sequence", urldecode($_GET['sequence']), time() + 365*24*3600);
+		$veritas = new VeritasWord($word);
+			
+		return $this->render('detailView', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'word' => $logic,
+                            'veritas' => $veritas,
+                ]);
+	    }
+	    catch (\Exception $e)
+	    {
+		
+                return $this->render('erreur', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'erreur' => $e->getMessage(),
+                            
+                ]);
+	    }
+	}
+	else {
+            if (isset($_COOKIE['sequence'])) {
+                
+                $sequence = $_COOKIE['sequence'];
+                return $this->render('detailView', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'sequence' => $sequence,
+                ]);
+            } else
+                return $this->render('detailView', [
+                        'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'sequence' => '',
+                ]);
+        }
+    }
 
+    //Interpreter des Sequences
+    public function actionInter_seq() {
+        $model = new Sequences();
+        
+            if (isset($_POST['Sequences']['proposition'])) {
+                
+                // requete SQL A VOIR AVEC GUIGUI
+                
+                return $this->render('listeResult', [
+                        'model' => $model,
+                 ]);
+            
+                
+
+           
+        } else {
+            return $this->render('interSeq', [
+                        'model' => $model,
+            ]);
+        }
+    }
+    
+    
+    
     /**
      * Finds the Sequences model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

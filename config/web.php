@@ -15,7 +15,10 @@ $config = [
             'class' => 'app\components\Logic',
             'class' => 'app\components\Veritas',
             'class' => 'app\components\VeritasLogic',
-            'class' => 'app\components\MinimalDisjunctiveForm', 
+            'class' => 'app\components\MinimalDisjunctiveForm',
+            'class' => 'app\components\Word',
+            'class' => 'app\components\VeritasWord',
+            
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',

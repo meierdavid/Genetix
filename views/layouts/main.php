@@ -38,8 +38,8 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav'],
     'items' => [
             ['label' => 'Liste des fonctions', 'url' => ['/permutationclasses/index']],
-            ['label' => 'Interpret a sequence', 'url' => ['/logicalfunction/index']],
-            ['label' => 'Search Sequences', 'url' => ['/sequences/index']],
+            ['label' => 'Interpret a sequence', 'url' => ['/sequences/inter_seq']],
+            ['label' => 'Search Sequences', 'url' => ['/sequences/search_seq']],
         ],
         ]);
     
