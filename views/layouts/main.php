@@ -47,11 +47,11 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             
-            ['label' => 'Accueil', 'url' => ['/site/index']],
-            ['label' => 'A propos', 'url' => ['/site/about']],
+            ['label' => 'Home page', 'url' => ['/site/index']],
+            ['label' => 'About', 'url' => ['/site/about']],
             ['label' => 'Contact', 'url' => ['/site/contact']],
             Yii::$app->user->isGuest ? (
-                ['label' => 'Se connecter', 'url' => ['/site/login']]
+                ['label' => 'Login', 'url' => ['/site/login']]
             ) : (
                 '<li>'
                 . Html::beginForm(['/site/logout'], 'post')
