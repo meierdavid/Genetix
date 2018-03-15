@@ -18,9 +18,9 @@ use yii\widgets\ActiveForm;
     
     <div class="cadreh1">
         <form method="post" action="#" onsubmit="return false;">
-            <label for="sequence">Enter a sequence</label>&nbsp;:&nbsp;<input type="text" class="post" style="width: 320px" id="sequence" name="sequence" onkeyup="chargeAjax('#resultat', 'interSeq.php?sequence='+encodeURI($('#sequence').val()));" />
+            <label for="sequence">Enter a sequence</label>&nbsp;:&nbsp;<input type="text" class="post" style="width: 320px" id="sequence" name="sequence" onkeyup="chargeAjax('#resultat', 'index.php?r=sequences%2Finter_seq_res&sequence='+encodeURI($('#sequence').val()));" />
             
-             <input type="submit" name="submit" class="btn btn-success" value="Interpret" onclick="chargeAjax('#resultat', 'interSeq.php?sequence='+$('#sequence').val());" class='mainoption'/>
+             <input type="submit" name="submit" class="btn btn-success" value="Interpret" onclick="chargeAjax('#resultat', 'index.php?r=sequences%2Finter_seq_res'+$('#sequence').val());" class='mainoption'/>
             
         </form>
     </div> 

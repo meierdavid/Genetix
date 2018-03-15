@@ -14,6 +14,8 @@ use app\components\VeritasLogic;
 use app\components\MinimalDisjunctiveForm;
 use app\components\Word;
 use app\components\VeritasWord;
+use app\components\Semantic;
+use app\components\Bitset;
 /**
  * SequencesController implements the CRUD actions for Sequences model.
  */
@@ -148,7 +150,79 @@ class SequencesController extends Controller
        
         
     }
-  
+      public function actionInfo()
+    {
+        $searchModel = new SequencesSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('phpinfo', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    
+    public function actionSearch_seq_treatment(){
+        //faire requete
+        if (isset($_GET['fonctionSearch'])) 
+	{
+	    try 
+	    {
+		if (empty($_GET['fonctionSearch']))
+		    throw new \exception(t('La séquence ne peut être vide'));
+		
+		$fonction = str_replace('-', '+', urldecode($_GET['fonctionSearch']));
+		
+		$logic = new Logic($fonction);
+		$veritas = new VeritasLogic($logic);
+		
+		setcookie ("fonction", $fonction, time() + 365*24*3600);
+		
+		//$wordsManager = new WordsManager($bdd);
+		//$logicManager = new LogicManager($bdd);
+ 		
+		/*$pagination = new Pagination(30, $wordsManager->getNombre($logicManager->getLogic(
+		    ['ndf',bindec($veritas->getMinimalOutput ()),DB::SQL_AND,'nb_inputs',$veritas->getMinimalNbInputs()])->getId_fn()), 
+		    'listSeq.php?output='.$veritas->getMinimalOutput ()."&amp;nbInputs=".$veritas->getMinimalNbInputs());
+		if (isset($_GET['page'])) $pagination->setPageActuelle($_GET['page']);
+		$pagination->setPremier(false);*/
+		
+                //Requête SQL pour récuperer la liste des séquences
+                // Select all from Sequences Where  'ndf' = bindec($veritas->getMinimalOutput() and 
+                //'nb_inputs' = $veritas->getMinimalNbInputs() 
+                // orderby weak_constraint DESC, length ASC
+		$liste =  $wordsManager->getListe($pagination, 
+		    ['ndf',bindec($veritas->getMinimalOutput ()),DB::SQL_AND,'nb_inputs',$veritas->getMinimalNbInputs()], 
+		    array(['champ' => 'weak_constraint', 'sens' => DB::ORDRE_DESC], ['champ' => 'length', 'sens' => DB::ORDRE_ASC]));
+		    
+		/*$tpl->assign(array(
+			'listeSequences' => $liste,
+			'pages' => $pagination->getPages()));
+		
+		$tpl->display('listSeq.html'); */
+                
+                 return $this->render('result', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'logic' => $logic,
+                            'veritas' => $veritas,
+                ]);
+	    }
+	    catch (\Exception $e)
+	    {
+                return $this->render('erreur', [
+                            'searchModel' => $searchModel,
+                            'dataProvider' => $dataProvider,
+                            'erreur' => $e->getMessage(),
+                            
+                ]);
+	    }
+	}
+        
+       
+        
+        
+    }
     // -----------------------------------SearchSeq
     // recupère la variable proposition. 
     // proposition : fonction qui implémente les sequences qu'on cherche
@@ -163,9 +237,6 @@ class SequencesController extends Controller
                 return $this->render('listeResult', [
                         'model' => $model,
                  ]);
-            
-                
-
            
         } else {
             return $this->render('searchSeq', [
@@ -189,9 +260,7 @@ class SequencesController extends Controller
 		$veritas = new VeritasWord($word);
 			
 		return $this->render('detailView', [
-                            'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider,
-                            'word' => $logic,
+                            'word' => $word,
                             'veritas' => $veritas,
                 ]);
 	    }
@@ -199,8 +268,7 @@ class SequencesController extends Controller
 	    {
 		
                 return $this->render('erreur', [
-                            'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider,
+                            
                             'erreur' => $e->getMessage(),
                             
                 ]);
@@ -211,14 +279,12 @@ class SequencesController extends Controller
                 
                 $sequence = $_COOKIE['sequence'];
                 return $this->render('detailView', [
-                            'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider,
+                            
                             'sequence' => $sequence,
                 ]);
             } else
                 return $this->render('detailView', [
-                        'searchModel' => $searchModel,
-                            'dataProvider' => $dataProvider,
+                        
                             'sequence' => '',
                 ]);
         }
@@ -264,3 +330,15 @@ class SequencesController extends Controller
         }
     }
 }
+
+
+
+
+/*requête word manager : "SELECT s.id_s, sequence, weak_constraint, strong_constraint, length, word, names
+			    FROM sequences s
+			    JOIN implements i ON i.id_s=s.id_s
+			    JOIN logical_functions lf ON lf.id_lf=i.id_lf 
+			    JOIN sequences_features sf ON sf.id_sf=s.id_sf  
+			    JOIN dyck_words dw ON dw.id_dw=s.id_dw
+			    JOIN namings n ON n.id_n=i.id_n
+			    "*/

@@ -18,6 +18,8 @@ $config = [
             'class' => 'app\components\MinimalDisjunctiveForm',
             'class' => 'app\components\Word',
             'class' => 'app\components\VeritasWord',
+            'class' => 'app\components\Semantic',
+            'class' => 'app\components\Bitset',
             
         ],
         'cache' => [

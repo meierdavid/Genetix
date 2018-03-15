@@ -36,8 +36,7 @@ AppAsset::register($this);
     ]);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav'],
-    'items' => [
-            ['label' => 'Liste des fonctions', 'url' => ['/permutationclasses/index']],
+        'items' => [
             ['label' => 'Interpret a sequence', 'url' => ['/sequences/inter_seq']],
             ['label' => 'Search Sequences', 'url' => ['/sequences/search_seq']],
         ],
